@@ -3,7 +3,7 @@
   <view class="search-bar">
     <input
       class="search-input"
-      placeholder="搜索商品名称、编号..."
+      placeholder="搜索商品名称..."
       placeholder-class="input-placeholder"
       value="{{searchValue}}"
       bindinput="onSearchInput"
@@ -14,18 +14,10 @@
     </view>
   </view>
 
-  <!-- Category Tabs -->
-  <scroll-view class="category-tabs" scroll-x enhanced show-scrollbar="{{false}}">
-    <view
-      class="tab-item {{activeCategory === index ? 'active' : ''}}"
-      wx:for="{{categories}}"
-      wx:key="*this"
-      bindtap="onCategoryTap"
-      data-index="{{index}}"
-    >
-      <text>{{item}}</text>
-    </view>
-  </scroll-view>
+  <!-- Inventory Count -->
+  <view class="inventory-count text-sm text-muted mb-md" wx:if="{{products.length > 0}}">
+    <text>共 {{products.length}} 条库存记录</text>
+  </view>
 
   <!-- Product List -->
   <view class="product-list">
@@ -33,26 +25,18 @@
       class="product-card card"
       wx:for="{{products}}"
       wx:key="id"
-      bindtap="onProductTap"
-      data-id="{{item.id}}"
     >
       <view class="product-info flex-row">
-        <view class="product-thumb" wx:if="{{item.image}}">
-          <image src="{{item.image}}" mode="aspectFill" />
-        </view>
-        <view class="product-thumb placeholder" wx:else>
+        <view class="product-thumb placeholder">
           <text>💎</text>
         </view>
         <view class="flex-1 product-detail">
-          <text class="product-name font-bold">{{item.name || item.product_name}}</text>
-          <text class="product-code text-sm text-muted">{{item.product_code || item.code}}</text>
-          <view class="product-meta flex-row mt-sm">
-            <text class="product-weight">{{item.weight || '—'}}g</text>
-            <text class="product-stock {{item.stock <= 5 ? 'low' : ''}}">库存: {{item.stock || item.quantity || 0}}</text>
-          </view>
+          <text class="product-name font-bold">{{item.product_name}}</text>
+          <text class="product-code text-sm text-muted">{{item.location_name || '未分配仓位'}}</text>
         </view>
-        <view class="product-price">
-          <text class="price-value">¥{{item.price || '—'}}</text>
+        <view class="product-weight-info">
+          <text class="weight-value">{{item.weight}}g</text>
+          <text class="weight-label text-sm text-muted">库存克重</text>
         </view>
       </view>
     </view>
@@ -60,16 +44,12 @@
     <!-- Empty State -->
     <view class="empty-state" wx:if="{{!isLoading && products.length === 0}}">
       <text class="empty-icon">📦</text>
-      <text class="empty-text text-muted">暂无商品数据</text>
+      <text class="empty-text text-muted">暂无库存数据</text>
     </view>
 
     <!-- Loading -->
     <view class="loading-more text-center text-muted" wx:if="{{isLoading}}">
       <text>加载中...</text>
-    </view>
-
-    <view class="loading-more text-center text-muted" wx:if="{{!hasMore && products.length > 0}}">
-      <text>已加载全部</text>
     </view>
   </view>
 </view>

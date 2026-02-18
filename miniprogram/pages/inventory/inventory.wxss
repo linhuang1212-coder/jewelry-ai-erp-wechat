@@ -109,15 +109,24 @@
   color: var(--danger-color);
 }
 
-.product-price {
+.product-weight-info {
   flex-shrink: 0;
   text-align: right;
 }
 
-.price-value {
+.weight-value {
+  display: block;
   font-size: 32rpx;
   font-weight: 700;
   color: var(--primary-color);
+}
+
+.weight-label {
+  display: block;
+}
+
+.inventory-count {
+  padding-left: 8rpx;
 }
 
 .empty-state {

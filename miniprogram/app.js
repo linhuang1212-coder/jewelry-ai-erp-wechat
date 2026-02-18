@@ -1,47 +1,21 @@
 App({
   globalData: {
     baseUrl: 'https://fblerp.com/api',
-    userInfo: null,
-    token: null,
+    userRole: 'manager',
     systemInfo: null,
   },
 
   onLaunch() {
     this.globalData.systemInfo = wx.getSystemInfoSync();
-    this.checkLogin();
-  },
-
-  checkLogin() {
-    const token = wx.getStorageSync('token');
-    if (token) {
-      this.globalData.token = token;
-      this.getUserInfo();
+    const savedRole = wx.getStorageSync('userRole');
+    if (savedRole) {
+      this.globalData.userRole = savedRole;
     }
   },
 
-  getUserInfo() {
-    const that = this;
-    wx.request({
-      url: `${this.globalData.baseUrl}/auth/me`,
-      header: { Authorization: `Bearer ${this.globalData.token}` },
-      success(res) {
-        if (res.statusCode === 200) {
-          that.globalData.userInfo = res.data;
-        } else {
-          that.logout();
-        }
-      },
-      fail() {
-        that.logout();
-      },
-    });
-  },
-
-  logout() {
-    this.globalData.token = null;
-    this.globalData.userInfo = null;
-    wx.removeStorageSync('token');
-    wx.reLaunch({ url: '/pages/index/index' });
+  setUserRole(role) {
+    this.globalData.userRole = role;
+    wx.setStorageSync('userRole', role);
   },
 
   request(options) {
@@ -53,17 +27,9 @@ App({
         data: options.data || {},
         header: {
           'Content-Type': 'application/json',
-          Authorization: that.globalData.token
-            ? `Bearer ${that.globalData.token}`
-            : '',
           ...options.header,
         },
         success(res) {
-          if (res.statusCode === 401) {
-            that.logout();
-            reject(new Error('Unauthorized'));
-            return;
-          }
           resolve(res);
         },
         fail(err) {

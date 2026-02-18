@@ -70,23 +70,9 @@
   margin-left: 12rpx;
 }
 
-.logout-section {
-  padding: 0 24rpx;
-  margin-top: 40rpx;
-}
-
-.logout-btn {
-  background: transparent;
-  color: var(--danger-color);
-  border: 2rpx solid var(--danger-color);
-  border-radius: 12rpx;
-  font-size: 30rpx;
-  padding: 20rpx 0;
-}
-
-.logout-btn:active {
-  background: var(--danger-color);
-  color: #ffffff;
+.role-picker {
+  color: var(--primary-color);
+  font-size: 28rpx;
 }
 
 .version {

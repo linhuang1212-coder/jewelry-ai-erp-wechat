@@ -4,10 +4,12 @@ Page({
   data: {
     userInfo: null,
     stats: {
-      totalProducts: 0,
+      todaySales: '0.00',
       todayOrders: 0,
-      goldPrice: '—',
+      avgGoldPrice: '—',
       pendingTasks: 0,
+      todayWeight: '0.00',
+      monthSales: '0.00',
     },
     quickActions: [
       { icon: '💬', title: 'AI对话', desc: '智能助手', page: '/pages/chat/chat' },
@@ -31,9 +33,19 @@ Page({
 
   async loadDashboard() {
     try {
-      const res = await app.request({ url: '/dashboard/stats' });
-      if (res.statusCode === 200) {
-        this.setData({ stats: res.data });
+      const res = await app.request({ url: '/analytics/dashboard/summary' });
+      if (res.statusCode === 200 && res.data.success) {
+        const d = res.data.data;
+        this.setData({
+          stats: {
+            todaySales: (d.today.sales_amount || 0).toFixed(2),
+            todayOrders: d.today.order_count || 0,
+            avgGoldPrice: d.today.avg_gold_price ? d.today.avg_gold_price.toFixed(2) : '—',
+            pendingTasks: d.pending.settlements || 0,
+            todayWeight: (d.today.sales_weight || 0).toFixed(2),
+            monthSales: (d.month.sales_amount || 0).toFixed(2),
+          },
+        });
       }
     } catch (e) {
       console.log('Dashboard load failed, using defaults');

@@ -1,36 +1,36 @@
 const app = getApp();
 
 const API = {
-  getProducts(params = {}) {
-    return app.request({ url: '/products', data: params });
+  getInventory(params = {}) {
+    return app.request({ url: '/warehouse/inventory', data: params });
   },
 
-  getProduct(id) {
-    return app.request({ url: `/products/${id}` });
+  getInventorySummary(params = {}) {
+    return app.request({ url: '/warehouse/inventory/summary', data: params });
   },
 
-  sendChat(message, conversationId) {
+  sendChat(message, userRole = 'manager', sessionId) {
     return app.request({
-      url: '/chat/stream',
+      url: '/chat',
       method: 'POST',
-      data: { message, conversation_id: conversationId },
+      data: { message, user_role: userRole, session_id: sessionId },
     });
   },
 
-  getDashboardStats() {
-    return app.request({ url: '/dashboard/stats' });
+  getDashboardSummary() {
+    return app.request({ url: '/analytics/dashboard/summary' });
   },
 
-  getGoldPrice() {
-    return app.request({ url: '/gold-price' });
+  getSalesTrends(params = {}) {
+    return app.request({ url: '/analytics/sales/trends', data: params });
   },
 
-  login(credentials) {
-    return app.request({
-      url: '/auth/login',
-      method: 'POST',
-      data: credentials,
-    });
+  getCustomers(params = {}) {
+    return app.request({ url: '/customers', data: params });
+  },
+
+  getSalesOrders(params = {}) {
+    return app.request({ url: '/sales/orders', data: params });
   },
 };
 

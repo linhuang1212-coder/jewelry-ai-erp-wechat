@@ -68,26 +68,19 @@ Page({
 
     try {
       const res = await app.request({
-        url: '/chat/stream',
+        url: '/chat',
         method: 'POST',
         data: {
           message: content,
-          conversation_id: this.data.conversationId,
+          user_role: 'manager',
+          session_id: this.data.conversationId,
         },
       });
 
       if (res.statusCode === 200) {
         const data = res.data;
-        if (data.conversation_id) {
-          this.setData({ conversationId: data.conversation_id });
-        }
-
-        const messages = this.data.messages;
-        const idx = messages.findIndex((m) => m.id === assistantMsgId);
-        if (idx !== -1) {
-          messages[idx].content = data.response || data.message || '抱歉，我没有理解你的问题。';
-          this.setData({ messages, scrollToView: assistantMsgId });
-        }
+        const reply = data.message || '抱歉，我没有理解你的问题。';
+        this.updateAssistantMessage(assistantMsgId, reply);
       } else {
         this.updateAssistantMessage(assistantMsgId, '网络错误，请稍后重试。');
       }
