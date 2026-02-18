@@ -72,14 +72,24 @@ Page({
         method: 'POST',
         data: {
           message: content,
-          user_role: 'manager',
+          user_role: app.globalData.userRole || 'manager',
           session_id: this.data.conversationId,
         },
       });
 
       if (res.statusCode === 200) {
         const data = res.data;
-        const reply = data.message || '抱歉，我没有理解你的问题。';
+        let reply = data.message || '抱歉，我没有理解你的问题。';
+
+        if (data.need_form) {
+          const guides = {
+            '入库': '\n\n💡 请直接告诉我完整信息，例如：\n"张三供应商 足金手链 15.5g 工费35"\n\n支持一次入库多个商品，每行一个即可。',
+            '创建销售单': '\n\n💡 请直接告诉我销售信息，例如：\n"客户李四 足金项链 12.3g 工费30"',
+            '退货': '\n\n💡 请直接告诉我退货信息，例如：\n"退货 订单号RK20260218001"',
+          };
+          reply = reply + (guides[data.action] || '\n\n💡 请提供更完整的信息，我会自动处理。');
+        }
+
         this.updateAssistantMessage(assistantMsgId, reply);
       } else {
         this.updateAssistantMessage(assistantMsgId, '网络错误，请稍后重试。');
