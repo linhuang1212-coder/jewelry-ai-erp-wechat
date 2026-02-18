@@ -1,0 +1,72 @@
+<view class="chat-container">
+  <!-- Chat Messages -->
+  <scroll-view
+    class="chat-messages"
+    scroll-y
+    scroll-into-view="{{scrollToView}}"
+    scroll-with-animation
+    enhanced
+    show-scrollbar="{{false}}"
+  >
+    <!-- Suggested Questions (shown when no user messages) -->
+    <view class="suggestions" wx:if="{{messages.length <= 1}}">
+      <text class="suggestions-title text-sm text-muted">试试问我：</text>
+      <view class="suggestion-list">
+        <view
+          class="suggestion-chip"
+          wx:for="{{suggestedQuestions}}"
+          wx:key="*this"
+          bindtap="onSuggestTap"
+          data-question="{{item}}"
+        >
+          <text>{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- Message Bubbles -->
+    <view
+      class="message-wrap {{item.role}}"
+      wx:for="{{messages}}"
+      wx:key="id"
+      id="{{item.id}}"
+    >
+      <view class="message-bubble {{item.role}}">
+        <text class="message-text" user-select>{{item.content}}</text>
+        <view wx:if="{{item.role === 'assistant' && !item.content && isLoading}}" class="typing-indicator">
+          <view class="dot"></view>
+          <view class="dot"></view>
+          <view class="dot"></view>
+        </view>
+      </view>
+      <text class="message-time text-sm text-muted">{{item.time}}</text>
+    </view>
+
+    <view style="height: 20rpx;"></view>
+  </scroll-view>
+
+  <!-- Input Area -->
+  <view class="chat-input-area">
+    <view class="input-row">
+      <input
+        class="chat-input"
+        value="{{inputValue}}"
+        placeholder="输入消息..."
+        placeholder-class="input-placeholder"
+        confirm-type="send"
+        bindinput="onInput"
+        bindconfirm="sendMessage"
+        disabled="{{isLoading}}"
+        adjust-position="{{true}}"
+      />
+      <view class="send-btn {{inputValue ? 'active' : ''}}" bindtap="sendMessage">
+        <text class="send-icon">➤</text>
+      </view>
+    </view>
+    <view class="input-toolbar">
+      <view class="toolbar-btn" bindtap="onClearChat">
+        <text>🗑️ 清空</text>
+      </view>
+    </view>
+  </view>
+</view>

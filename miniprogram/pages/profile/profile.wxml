@@ -1,0 +1,44 @@
+<view class="container">
+  <!-- Profile Header -->
+  <view class="profile-header card">
+    <view class="flex-row">
+      <view class="avatar-wrap">
+        <image class="avatar" src="{{userInfo.avatar || '/assets/icons/default-avatar.png'}}" mode="aspectFill" />
+      </view>
+      <view class="flex-1 user-info">
+        <text class="text-lg font-bold">{{userInfo.name || '未登录'}}</text>
+        <text class="text-sm text-muted mt-sm">{{userInfo.role || '请先登录账号'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Menu List -->
+  <view class="menu-list">
+    <view
+      class="menu-item card"
+      wx:for="{{menuItems}}"
+      wx:key="title"
+      bindtap="onMenuTap"
+      data-title="{{item.title}}"
+    >
+      <view class="flex-row">
+        <text class="menu-icon">{{item.icon}}</text>
+        <view class="flex-1">
+          <text class="menu-title">{{item.title}}</text>
+          <text class="menu-desc text-sm text-muted">{{item.desc}}</text>
+        </view>
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Logout -->
+  <view class="logout-section" wx:if="{{userInfo}}">
+    <button class="logout-btn" bindtap="onLogout">退出登录</button>
+  </view>
+
+  <!-- Version -->
+  <view class="version text-center text-muted mt-lg">
+    <text>珠宝AI ERP v1.0.0</text>
+  </view>
+</view>
