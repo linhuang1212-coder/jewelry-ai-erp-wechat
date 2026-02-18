@@ -36,12 +36,23 @@
     "disableUseStrict": false,
     "minifyWXML": true,
     "showES6CompileOption": false,
-    "useCompilerPlugins": false
+    "useCompilerPlugins": false,
+    "compileWorklet": false,
+    "localPlugins": false,
+    "condition": false,
+    "swc": false,
+    "disableSWC": true
   },
   "compileType": "miniprogram",
   "libVersion": "3.3.4",
   "appid": "wx01a27c6c69c1fcb7",
   "projectname": "jewelry-ai-erp-wechat",
   "condition": {},
-  "description": "珠宝AI ERP微信小程序版"
+  "description": "珠宝AI ERP微信小程序版",
+  "simulatorPluginLibVersion": {},
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "editorSetting": {}
 }

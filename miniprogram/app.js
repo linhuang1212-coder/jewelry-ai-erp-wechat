@@ -1,6 +1,6 @@
 App({
   globalData: {
-    baseUrl: 'https://your-backend-domain.com/api/v1',
+    baseUrl: 'https://fblerp.com/api',
     userInfo: null,
     token: null,
     systemInfo: null,
